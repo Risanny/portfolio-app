@@ -12,18 +12,27 @@ public class PhotoSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;               // Название фотосессии
-    private String description;         // Описание
-
-    private LocalDate sessionDate;      // Дата проведения
+    private String title;
+    private String description;
+    private LocalDate sessionDate;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private SessionType type;           // Тип сессии (портрет, лавстори и т.п.)
+    private SessionType type;
 
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Photo> photos;         // Список фото
+    private List<Photo> photos;
 
-    // TODO: Добавить конструкторы, геттеры/сеттеры (можно Lombok @Data)
+    public PhotoSession() { }
+
+    // Геттер и сеттер для id
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // TODO: добавить геттеры/сеттеры для остальных полей
 }
-
