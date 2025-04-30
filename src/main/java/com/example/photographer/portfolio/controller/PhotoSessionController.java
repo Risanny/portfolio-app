@@ -7,6 +7,9 @@ import com.example.photographer.portfolio.service.PhotoSessionService;
 import com.example.photographer.portfolio.service.SessionTypeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.photographer.portfolio.service.PhotoService;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.net.URI;
 import java.util.Collections;
@@ -19,11 +22,14 @@ public class PhotoSessionController {
 
     private final PhotoSessionService sessionService;
     private final SessionTypeService typeService;
+    private final PhotoService photoService;
 
     public PhotoSessionController(PhotoSessionService sessionService,
-                                  SessionTypeService typeService) {
+                                  SessionTypeService typeService,
+                                  PhotoService photoService) {
         this.sessionService = sessionService;
         this.typeService = typeService;
+        this.photoService = photoService;
     }
 
     /** GET all */
@@ -59,6 +65,15 @@ public class PhotoSessionController {
         return ResponseEntity
                 .created(URI.create("/api/sessions/" + result.getId()))
                 .body(result);
+    }
+
+    @PostMapping("/{id}/photos")
+    public ResponseEntity<Void> uploadPhotos(
+            @PathVariable Long id,
+            @RequestParam("files") MultipartFile[] files
+    ) {
+        photoService.uploadPhotos(id, files);
+        return ResponseEntity.ok().build();
     }
 
     /** PUT update existing */
