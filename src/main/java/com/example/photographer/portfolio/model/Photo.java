@@ -10,11 +10,37 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String filename;   // Имя файла (храним в файловой системе)
+    private String filename;   // Имя файла
 
     @ManyToOne
     @JoinColumn(name = "session_id")
     private PhotoSession session;
 
-    // TODO: при загрузке сохранять файлы в локальную папку /uploads/{sessionId}/
+    public Photo() {}
+
+    // --- Добавьте эти методы: ---
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public PhotoSession getSession() {
+        return session;
+    }
+
+    public void setSession(PhotoSession session) {
+        this.session = session;
+    }
 }

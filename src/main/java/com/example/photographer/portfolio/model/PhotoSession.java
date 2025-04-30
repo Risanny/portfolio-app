@@ -23,9 +23,21 @@ public class PhotoSession {
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos;
 
-    public PhotoSession() { }
+    // JPA requires a default constructor
+    public PhotoSession() {
+    }
 
-    // Геттер и сеттер для id
+    // Constructor for convenience
+    public PhotoSession(Long id, String title, String description, LocalDate sessionDate, SessionType type, List<Photo> photos) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.sessionDate = sessionDate;
+        this.type = type;
+        this.photos = photos;
+    }
+
+    // Getter and setter for id
     public Long getId() {
         return id;
     }
@@ -34,5 +46,48 @@ public class PhotoSession {
         this.id = id;
     }
 
-    // TODO: добавить геттеры/сеттеры для остальных полей
+    // Getter and setter for title
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    // Getter and setter for description
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    // Getter and setter for sessionDate
+    public LocalDate getSessionDate() {
+        return sessionDate;
+    }
+
+    public void setSessionDate(LocalDate sessionDate) {
+        this.sessionDate = sessionDate;
+    }
+
+    // Getter and setter for type
+    public SessionType getType() {
+        return type;
+    }
+
+    public void setType(SessionType type) {
+        this.type = type;
+    }
+
+    // Getter and setter for photos
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
+    }
 }
