@@ -9,21 +9,22 @@
       </nav>
     </header>
 
-    <!-- Здесь будут рендериться ваши страницы -->
     <main>
-      <router-view />
+      <!-- Router-view рендерит то, что описано в src/router/index.js -->
+      <router-view/>
     </main>
 
-    <footer>© 2025 Photographer Portfolio</footer>
+    <footer>
+      © 2025 Photographer Portfolio
+    </footer>
   </div>
 </template>
 
 <script setup>
-// никаких дополнительных импортов здесь не нужно
+// здесь больше ничего не должно быть
 </script>
 
 <style>
-/* Базовый стили для навигации и контейнера */
 #app {
   font-family: Arial, sans-serif;
   max-width: 960px;
