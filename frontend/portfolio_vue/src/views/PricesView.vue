@@ -13,9 +13,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 const types = ref([])
-const axios = getCurrentInstance().appContext.config.globalProperties.$axios
 
 onMounted(async () => {
   try {

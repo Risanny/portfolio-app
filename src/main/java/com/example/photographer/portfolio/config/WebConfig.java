@@ -1,24 +1,21 @@
 package com.example.photographer.portfolio.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
-/**
- * Конфигурация для раздачи загруженных файлов по URL /uploads/**
- */
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    // Директория, куда сохраняются файлы (app.upload.dir из application.properties)
-    @Value("${app.upload.dir}")
-    private String uploadDir;
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Любые запросы к /uploads/** будут читаться из файловой системы
+        // берём абсолютный путь к папке uploads в корне вашего проекта
+        Path uploadDir = Paths.get("uploads");
+        String uploadPath = uploadDir.toFile().getAbsolutePath() + "/";
+
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadDir + "/");
+                .addResourceLocations("file:" + uploadPath);
     }
 }

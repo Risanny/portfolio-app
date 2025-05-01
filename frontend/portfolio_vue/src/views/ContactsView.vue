@@ -37,6 +37,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 const types = ref([])
 const form = ref({
@@ -47,7 +48,6 @@ const form = ref({
   comment: ''
 })
 const status = ref('')
-const axios = getCurrentInstance().appContext.config.globalProperties.$axios
 
 onMounted(async () => {
   try {
