@@ -23,28 +23,27 @@
             @click="openLightbox(`/uploads/${session.id}/${filename}`)"
           />
         </div>
-
-        <!-- лайтбокс -->
-        <Lightbox
-          :visible="lightboxVisible"
-          :src="lightboxSrc"
-          @close="closeLightbox"
-        />
-        </div>
       </div>
     </div>
+
+    <!-- Lightbox-компонент -->
+    <Lightbox
+      :visible="lightboxVisible"
+      :src="lightboxSrc"
+      @close="closeLightbox"
+    />
+  </div>
 </template>
 
 <script setup>
-// Импортируем из Vue и Axios
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-
 import Lightbox from '@/components/Lightbox.vue'
 
+/** Список сессий из бэка */
 const sessions = ref([])
 
-// Для лайтбокса
+// Lightbox state
 const lightboxVisible = ref(false)
 const lightboxSrc     = ref('')
 
@@ -57,35 +56,14 @@ onMounted(async () => {
   }
 })
 
-// Открыть лайтбокс
 function openLightbox(src) {
   lightboxSrc.value = src
   lightboxVisible.value = true
 }
 
-// Закрыть лайтбокс
 function closeLightbox() {
   lightboxVisible.value = false
 }
-
-/**
- * @typedef {Object} Session
- * @property {number} id
- * @property {string} title
- * @property {string} description
- * @property {string} sessionDate
- * @property {number} typeId
- * @property {string[]} photoFilenames
- */
-
-onMounted(async () => {
-  try {
-    const { data } = await axios.get('/sessions')
-    sessions.value = data
-  } catch (err) {
-    console.error('Ошибка при загрузке сессий', err)
-  }
-})
 </script>
 
 <style scoped>
@@ -93,28 +71,25 @@ onMounted(async () => {
   margin-bottom: 2rem;
 }
 
-/* Обёртка галереи: flex или grid на ваш вкус */
+/* Сетка для миниатюр */
 .photos {
   display: grid;
-  /* 3 фото в ряд, каждое минимум 200px, максимум растягивается равномерно */
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;             /* расстояние между картинками */
+  gap: 1rem;
   margin-top: 1rem;
 }
 
-/* Сами картинки */
+/* Сами превью */
 .photos img {
-  width: 100%;           /* растягиваем под ячейку grid */
-  height: auto;          /* сохраняем пропорции */
-  object-fit: cover;     /* обрезает лишнее, если необходимо */
-  border-radius: 4px;    /* чуть скруглим углы */
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: zoom-in;
   transition: transform .2s;
 }
-
-/* При наведении сделаем «zoom» */
 .photos img:hover {
   transform: scale(1.05);
 }
 </style>
-

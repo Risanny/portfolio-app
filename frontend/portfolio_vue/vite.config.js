@@ -1,34 +1,31 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
 
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-
-  // <<< Add this block!
   server: {
     proxy: {
-      // All API calls → Spring Boot
+      // все вызовы /api/* будут идти на Spring (8080)
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
-      // All image requests → Spring Boot
+      // все запросы к /uploads/* — тоже на Spring
       '/uploads': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
-      }
+      },
     }
   }
 })
