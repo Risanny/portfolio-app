@@ -91,10 +91,18 @@ public class PhotoSessionController {
         return ResponseEntity.ok(toDto(updated));
     }
 
-    /** DELETE */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSession(@PathVariable Long id) {
         sessionService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /** DELETE  /api/sessions/{id}/photos/{filename} */
+    @DeleteMapping("/{id}/photos/{filename}")
+    public ResponseEntity<Void> deleteSessionPhoto(
+            @PathVariable Long id,
+            @PathVariable String filename) {
+        photoService.deletePhotoByFilename(id, filename);
         return ResponseEntity.noContent().build();
     }
 

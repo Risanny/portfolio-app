@@ -2,8 +2,11 @@ package com.example.photographer.portfolio.service.impl;
 
 import com.example.photographer.portfolio.model.SessionType;
 import com.example.photographer.portfolio.repository.SessionTypeRepository;
+import com.example.photographer.portfolio.repository.PhotoSessionRepository;
 import com.example.photographer.portfolio.service.SessionTypeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +14,13 @@ import java.util.Optional;
 @Service
 public class SessionTypeServiceImpl implements SessionTypeService {
 
-    private final SessionTypeRepository repo;
+    private final SessionTypeRepository     repo;
+    private final PhotoSessionRepository sessionRepo;
 
-    public SessionTypeServiceImpl(SessionTypeRepository repo) {
-        this.repo = repo;
+    public SessionTypeServiceImpl(SessionTypeRepository repo,
+                                  PhotoSessionRepository sessionRepo) {
+        this.repo        = repo;
+        this.sessionRepo = sessionRepo;
     }
 
     @Override
@@ -40,6 +46,14 @@ public class SessionTypeServiceImpl implements SessionTypeService {
 
     @Override
     public void delete(Long id) {
+        // Предварительная проверка: есть ли сессии этого типа?
+        long count = sessionRepo.countByTypeId(id);
+        if (count > 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Нельзя удалить тип: существуют " + count + " привязанных фотосессий"
+            );
+        }
         repo.deleteById(id);
     }
 }

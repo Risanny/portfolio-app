@@ -2,6 +2,8 @@ package com.example.photographer.portfolio.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "session_type")
 public class SessionType {
@@ -12,13 +14,18 @@ public class SessionType {
 
     private String name;
 
-    // Пустой конструктор для JPA
+    private String price;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     public SessionType() {}
 
-    // Конструктор с полями (удобно для тестов или быстрых инициализаций)
-    public SessionType(Long id, String name) {
+    public SessionType(Long id, String name, String price, String description) {
         this.id = id;
         this.name = name;
+        this.price = price;
+        this.description = description;
     }
 
     // Геттер и сеттер для id
@@ -37,5 +44,21 @@ public class SessionType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

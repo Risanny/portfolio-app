@@ -1,55 +1,34 @@
 <template>
   <div id="app">
-    <header>
-      <nav>
-        <router-link to="/">Главная</router-link>
-        <router-link to="/portfolio">Портфолио</router-link>
-        <router-link to="/prices">Условия и прайсы</router-link>
-        <router-link to="/contacts">Контакты</router-link>
-      </nav>
-    </header>
+    <!-- Глобальный Navbar показываем только вне /admin -->
+    <Navbar v-if="!isAdminRoute" />
 
-    <main>
-      <!-- Router-view рендерит то, что описано в src/router/index.js -->
-      <router-view/>
-    </main>
+    <!-- Здесь попадает либо публичный контент, либо AdminLayout -->
+    <router-view />
 
-    <footer>
-      © 2025 Photographer Portfolio
-    </footer>
+    <!-- Глобальный Footer показываем только вне /admin -->
+    <Footer v-if="!isAdminRoute" />
   </div>
 </template>
 
 <script setup>
-// здесь больше ничего не должно быть
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
+
+const route = useRoute()
+// будем считать, что любые пути, начинающиеся на /admin, — это админка
+const isAdminRoute = computed(() => route.path.startsWith('/admin'))
 </script>
 
 <style>
 #app {
-  font-family: Arial, sans-serif;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-nav {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-}
-
-nav a.router-link-active {
-  font-weight: bold;
-}
-
-footer {
-  margin-top: 2rem;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #666;
+  color: #2c3e50;
 }
 </style>

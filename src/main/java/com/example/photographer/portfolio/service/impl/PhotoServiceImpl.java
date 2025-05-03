@@ -71,4 +71,52 @@ public class PhotoServiceImpl implements PhotoService {
             photoRepo.save(photo);
         }
     }
+
+    @Override
+    public void deletePhoto(Long photoId) {
+        Photo photo = photoRepo.findById(photoId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Photo not found: id=" + photoId
+                ));
+
+        // 1) Удаляем файл с диска
+        Path filePath = Paths.get(uploadDir,
+                photo.getSession().getId().toString(),
+                photo.getFilename());
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to delete file: " + photo.getFilename(), e
+            );
+        }
+
+        // 2) Удаляем запись из БД
+        photoRepo.delete(photo);
+    }
+
+    @Override
+    public void deletePhotoByFilename(Long sessionId, String filename) {
+        Photo photo = photoRepo.findBySessionIdAndFilename(sessionId, filename)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Photo not found: session=" + sessionId + ", file=" + filename
+                ));
+
+        // 1) Удалить файл с диска
+        Path filePath = Paths.get(uploadDir, sessionId.toString(), filename);
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to delete file: " + filename, e
+            );
+        }
+
+        // 2) Удалить запись из БД
+        photoRepo.delete(photo);
+    }
 }

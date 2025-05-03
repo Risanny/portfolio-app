@@ -1,0 +1,48 @@
+:root {
+  /* Переопределяем основные цвета Bootstrap */
+  --bs-primary:   #4a90e2; /* вместо синего из коробки */
+  --bs-secondary: #f5a623;
+  --bs-success:   #28a745;
+  --bs-danger:    #dc3545;
+
+  /* Свои переменные */
+  --brand-bg:     #1f2833;
+  --brand-text:   #c5c6c7;
+}
+
+/* Пример: изменим фон навбара */
+.navbar {
+  background-color: var(--brand-bg) !important;
+}
+
+.navbar .nav-link {
+  color: var(--brand-text) !important;
+}
+
+.navbar .nav-link.active {
+  border-bottom-color: var(--bs-primary);
+}
+
+/* Кнопки по умолчанию — outline-стиль */
+.btn {
+  border-radius: 4px;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.btn-outline-primary {
+  color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.btn-outline-primary:hover {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+/* Кастомные анимации */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp .4s ease-out both;
+}
